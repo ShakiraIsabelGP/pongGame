@@ -1,6 +1,7 @@
 package org.example.pong;
 
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
@@ -28,13 +29,15 @@ public class TerminalDisplay {
         }
     }
 
-    public char getNextKeypress() {
+    /**
+     * Returns a KeyStroke, or null if the user has not pressed a key.
+     */
+    public KeyStroke getNextKeypress() {
         try {
-            return t.readInput().getCharacter();
+            return t.pollInput();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public void putCharacter(int x, int y, char c) {
@@ -52,56 +55,6 @@ public class TerminalDisplay {
             throw new RuntimeException(e);
         }
     }
-
-    public void drawDiagonal(int size, char c) throws IOException {
-        for (int i = 0; i < size; i++) {
-            putCharacter(i, i, c);
-        }
-    }
-
-    public void drawFull(int size, char diagonalChar, char fillChar) throws IOException {
-        int i = 0;
-        while (i < size) {
-            putCharacter(i, i, diagonalChar);
-
-            for (int j = 0; j < size; j++) {
-                if (i != j) {
-                    putCharacter(i, j, fillChar);
-                }
-            }
-            i++;
-        }
-    }
-
-    public void drawHorizontalLine(int xStart, int width, int y) throws IOException {
-        for (int x = xStart; x < xStart + width; x++) {
-            putCharacter(x, y, 'x');
-        }
-    }
-
-    public void drawVerticalLine(int yStart, int height, int x) throws IOException {
-        for (int y = yStart; y < yStart + height; y++) {
-            putCharacter(x, y, 'x');
-        }
-    }
-
-    public void drawRectangle(int x, int y, int width, int height) throws IOException {
-        drawHorizontalLine(x, width, y);
-        drawHorizontalLine(x, width, y + height - 1);
-
-        drawVerticalLine(y, height, x);
-        drawVerticalLine(y, height, x + width - 1);
-    }
-
-    public void drawSquare(int x, int y, int size) throws IOException {
-        int squareSize = size - 2;
-        drawHorizontalLine(x, size, y);
-        drawHorizontalLine(x, size, y + squareSize);
-
-        drawVerticalLine(y, squareSize, x);
-        drawVerticalLine(y, squareSize, x + size - 1);
-    }
-
 
     public int getX() {
         try {
@@ -142,16 +95,5 @@ public class TerminalDisplay {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void main(String[] args) throws InterruptedException, IOException {
-        TerminalDisplay t = new TerminalDisplay();
-        //  t.moveCursor(5, 5);
-        //    t.drawDiagonal(10, 'x')
-        // t.drawFull(10, 'X', 'o');
-        //  t.drawRectangle(15, 0, 5, 5);
-        //  t.drawSquare(5, 0, 5);
-        System.exit(0);
-
     }
 }
