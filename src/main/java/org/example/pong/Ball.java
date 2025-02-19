@@ -12,14 +12,14 @@ public class Ball {
     }
 
     public void updatePosition(double t) {
-            position = position.plus(velocity.times(t));
+        position = position.plus(velocity.times(t));
     }
 
     public void bounce(Axis a) {
         if (a == Axis.X)
-            velocity.x = - velocity.x;
+            velocity.x = -velocity.x;
         else
-            velocity.y = - velocity.y;
+            velocity.y = -velocity.y;
     }
 }
 
