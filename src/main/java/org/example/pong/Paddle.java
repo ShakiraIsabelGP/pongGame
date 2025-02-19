@@ -17,7 +17,6 @@ public class Paddle {
     public void moveUp(TerminalDisplay t) {
         int height = t.getTerminalSize().getRows();
         while (this.position.y < height) {
-            t.clear();
             t.putCharacter((int) Math.round(this.position.x), (int) Math.round(this.position.y) - 1, '|');
             t.flush();
         }
@@ -26,6 +25,7 @@ public class Paddle {
     public void moveDown(TerminalDisplay t) {
         while (this.position.y > 0) {
             t.putCharacter((int) Math.round(this.position.x), (int) Math.round(this.position.y) + 1, '|');
+            t.flush();
         }
     }
 
