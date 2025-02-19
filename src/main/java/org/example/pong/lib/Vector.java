@@ -3,7 +3,7 @@ package org.example.pong.lib;
 import java.util.Objects;
 
 public class Vector {
-    double x, y;
+    public double x, y;
 
     public Vector(double x, double y) {
         this.x = x;
