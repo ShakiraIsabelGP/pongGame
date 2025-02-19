@@ -11,8 +11,8 @@ public class Main {
         TerminalSize size = t.getTerminalSize();
         int height = size.getRows();
         int width = size.getColumns();
-        Paddle playerOne = new Paddle(new Vector(2, height / 2));
-        Paddle playerTwo = new Paddle(new Vector(width - 2, height / 2));
+        Paddle playerOne = new Paddle(new Vector(2, height / 2.0), 1);
+        Paddle playerTwo = new Paddle(new Vector(width - 2, height / 2.0), 1);
 
         double fps = 30.0;
         double timeDelta = 1.0 / fps;
@@ -34,14 +34,28 @@ public class Main {
             if (b.position.y >= height || b.position.y <= 0)
                 b.bounce(Axis.Y);
 
-            if (b.position.x == playerOne.position.x && b.position.y == playerOne.position.y) {
+            if (playerOne.isBallCollidingPaddle(b) || playerTwo.isBallCollidingPaddle(b)) {
                 b.bounce(Axis.X);
             }
 
-            if (b.position.x == playerTwo.position.x && b.position.y == playerTwo.position.y) {
-                b.bounce(Axis.X);
-            }
-
+            k = t.getNextKeypress();
+            if (k != null)
+                switch (k.getCharacter()) {
+                    case 'w':
+                        playerOne.moveUp(t);
+                        break;
+                    case 's':
+                        playerOne.moveDown(t);
+                        break;
+                    case 'k':
+                        playerTwo.moveUp(t);
+                        break;
+                    case 'j':
+                        playerTwo.moveDown(t);
+                        break;
+                }
+//
+            System.out.println(b.position.x);
             t.setCursorPosition((int) Math.round(b.position.x), (int) Math.round(b.position.y));
 
             t.flush();
@@ -49,7 +63,6 @@ public class Main {
             long timeToRender = end - start;
 
             Thread.sleep(timeDeltaMs - timeToRender);
-            k = t.getNextKeypress();
 
 
         }
