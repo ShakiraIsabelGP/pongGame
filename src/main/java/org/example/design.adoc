@@ -1,0 +1,65 @@
+= Design of Pong
+
+== Input
+
+We're using Laterna. It has a polling mechanism for the keyboard.
+
+Challenges:
+
+* What happens when more than one key is pressed?
+** Might affect two-player mode (there's no "key down" event)
+** What happens if we HOLD a key? Do we get multiple keypress objects? Do we only ever get one?
+   Do we not get anything when holding? Will we have to "tap" the key to be able to see it?
+
+== Animation
+
+* How do we make multiple things move on the screen at the same time?
+** Loop with flush?
+** Data:
+*** Shape/object/ball: position, velocity
+* How do we make things (like our simulated ball) go a particular "speed"?
+** loop controlled by Thread.sleep
+* Is the terminal library fast enough to do decent animation?
+
+== Vectors:
+
+* A mathematical construct that has a magnitude and direction.
+* Represented as tuples of numbers (with a given order (x, y, z)/units (e.g. pixels (position), pixels/sec (velocity))))
+
+A = (1 pixels, 1 pixels)  (position)
+B = (1 pixels/sec, 1 pixels/sec)  (velocity)
+
+In one dimension:
+
+x=0 p
+vx = 1 p/s
+y=1 p
+vy = 2 p/s
+
+Where is the object after 5 seconds:
+
+x = 0p + 1 p/s * 5 s = 5 pixels    p = p0 + v*t
+y = 1p + 2 p/s * 5 s = 11 pixels
+
+PRECEDENCE rules are same as regular algebra.
+
+RULE 1: Multiply a vector A BY a number n
+
+A = <x, y, z, ...>
+n*A = <n*x, n*y, n*z, n*...>
+
+RULE 2: Adding TWO VECTORS (Requirement: of the SAME size)
+
+A = <a0, a1, a2, ...>
+B = <b0, b1, b2, ...>
+A+B = <a0+b0, a1+b1, ...>
+
+p_start = <0 p,1 p>
+v = <1 p/s, 2 p/s>
+t = 5
+
+p = p_old + v * t
+  = <0,1> + <1,2>*5
+  = <0,1> + <5,10>
+  = <5,11>
+
