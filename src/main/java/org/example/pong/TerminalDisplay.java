@@ -40,6 +40,14 @@ public class TerminalDisplay {
         }
     }
 
+    public char getKeypress()  {
+           try {
+               return t.readInput().getCharacter();
+           } catch (IOException e) {
+               throw new RuntimeException(e);
+           }
+       }
+
     public void putCharacter(int x, int y, char c) {
         try {
             t.setCursorPosition(x, y);

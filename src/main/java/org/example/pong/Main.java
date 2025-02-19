@@ -7,14 +7,14 @@ import com.googlecode.lanterna.input.KeyStroke;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         TerminalDisplay t = new TerminalDisplay();
-        Ball b = new Ball(new Vector(3, 5), new Vector(-1, 6));
+        Ball b = new Ball(new Vector(3, 5), new Vector(-1, 10));
         TerminalSize size = t.getTerminalSize();
         int height = size.getRows();
         int width = size.getColumns();
         Paddle playerOne = new Paddle(new Vector(2, height / 2));
         Paddle playerTwo = new Paddle(new Vector(width - 2, height / 2));
 
-        double fps = 30.0;
+        double fps = 100.0;
         double timeDelta = 1.0 / fps;
         final long timeDeltaMs = (long) (timeDelta * 1000);
         System.out.println(timeDeltaMs);
@@ -25,16 +25,40 @@ public class Main {
 
             b.updatePosition(timeDelta);
             t.clear();
-
+            playerOne.draw(t);
+            playerTwo.draw(t);
 
             if (b.position.x >= width || b.position.x <= 0)
                 b.bounce(Axis.X);
 
             if (b.position.y >= height || b.position.y <= 0)
                 b.bounce(Axis.Y);
+
+            if (b.position.x == playerOne.position.x && b.position.y == playerOne.position.y) {
+                b.bounce(Axis.X);
+            }
+
+            if (b.position.x == playerTwo.position.x && b.position.y == playerTwo.position.y) {
+                b.bounce(Axis.X);
+            }
+
+            char paddleKey = t.getKeypress();
+            System.out.println(paddleKey);
+            switch (paddleKey) {
+                case 'w':
+                    playerOne.moveUp(t);
+                    break;
+                case 's':
+                    playerOne.moveDown(t);
+                    break;
+                case 'k':
+                    playerTwo.moveUp(t);
+                case 'j':
+                    playerTwo.moveDown(t);
+            }
+
+
             t.setCursorPosition((int) Math.round(b.position.x), (int) Math.round(b.position.y));
-            t.flush();
-            t.putCharacter((int) Math.round(playerOne.position.x), (int) Math.round(playerOne.position.y), 'X');
 
             t.flush();
             long end = System.currentTimeMillis();
@@ -44,7 +68,8 @@ public class Main {
             k = t.getNextKeypress();
 
 
-        } while (k == null || k.getCharacter() != 'q');
+        }
+        while (k == null || k.getCharacter() != 'q');
         System.exit(1);
     }
 }
